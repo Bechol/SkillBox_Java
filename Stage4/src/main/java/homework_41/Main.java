@@ -9,10 +9,9 @@ public class Main {
     }
 
     public Integer sumDigits(Integer number) {
-        String str = number.toString();
         int sum = 0;
-        for (int i = 0; i < str.length(); i++) {
-            sum += Integer.parseInt(String.valueOf(str.charAt(i)));
+        for (int i = 0; i < number.toString().length(); i++) {
+            sum += Character.getNumericValue(number.toString().charAt(i));
         }
         return sum;
     }
