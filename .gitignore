@@ -1,11 +1,12 @@
 # Created by .ignore support plugin (hsz.mobi)
 ###IDEA folders and files
+target/
+*.logs
 *.iml
-.idea
-.out
+.idea/
+.eclipse
+
 ### Java template
-# Compiled class file
-*.class
 
 # Log file
 *.log
