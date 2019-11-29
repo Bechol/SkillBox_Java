@@ -18,30 +18,14 @@ public class RedCross {
                     continue;
                 }
 
-                double containerAmount = Math.ceil((double) boxAmount / (double) CONTAINER_CAPACITY);
-                double trackAmount = Math.ceil(containerAmount / (double) TRACK_CAPACITY);
-
-                System.out.println("Для перевозки ящиков потребуется: " + "\n1.Грузовиков: " + trackAmount + " шт." +
-                        "\n2.Контейнеров: " + containerAmount + " шт. ");
-
-                for (int i = 1; i <= trackAmount; i++) {
-                    System.out.println("Грузовик " + i + ":");
-                    for (int j = 1; j <= TRACK_CAPACITY; j++) {
-                        if (containerAmount > 0) {
-                            System.out.println("\tКонтейнер " + j + ":");
-                            containerAmount--;
-                        } else {
-                            break;
-                        }
-                        for (int k = 1; k <= CONTAINER_CAPACITY; k++) {
-                            if (boxAmount > 0) {
-                                System.out.println("\t\tЯщик " + k);
-                                boxAmount--;
-                            } else {
-                                break;
-                            }
-                        }
+                for (int i = 0; i < boxAmount; i++) {
+                    if (i % (TRACK_CAPACITY * CONTAINER_CAPACITY) == 0) {
+                        System.out.println("Грузовик " + (i / TRACK_CAPACITY / CONTAINER_CAPACITY + 1) + ":");
                     }
+                    if (i % CONTAINER_CAPACITY == 0) {
+                        System.out.println("\tКонтейнер " + (i / CONTAINER_CAPACITY + 1) + ":");
+                    }
+                    System.out.println("\t\tЯщик " + (i + 1));
                 }
             } catch (InputMismatchException ime) {
                 printAlert("значение должно быть целым числом.");
