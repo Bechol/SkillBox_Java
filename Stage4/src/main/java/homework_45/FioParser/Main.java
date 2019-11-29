@@ -1,9 +1,9 @@
-package homework_44.FioParser;
+package homework_45.FioParser;
 
 import java.util.Scanner;
 
 /**
- * 4.4.3 и 4.4.4*
+ * 4.5.3
  */
 public class Main {
     private static final String[] FIO_DETAILS = {"Фамилия", "Имя", "Отчество"};
