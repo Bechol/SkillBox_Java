@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 /**
  * 5.3
- * Написать программу, в которой будет храниться перечень e-mail-ов.
+ * Написать программу, в которой будет хранится перечень e-mail-ов.
  * E-mail’ы  можно добавлять через консоль командой ADD и печатать весь список командой LIST.
  * * Проверять корректность вводимых e-mail’ов и в случае необходимости печатать сообщение об ошибке.
  *
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class EmailList {
     /*строка, вводимая пользователем*/
     private static String userInput;
-    /*сет постовых адресов*/
+    /*сет почтовых адресов*/
     private static HashSet<String> emailSet = new HashSet<>();
 
     public static void main(String[] args) {
