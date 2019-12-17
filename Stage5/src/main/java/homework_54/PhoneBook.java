@@ -2,6 +2,8 @@ package homework_54;
 
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 5.4
@@ -22,6 +24,7 @@ public class PhoneBook {
 
     private static final String NAME_REGEX = "^[А-Я][а-я]*$";
     private static final String PHONE_NUMBER_REGEX = "^8[(]\\d{3}[)]\\d{3}[-]\\d{2}[-]\\d{2}";
+    private static final String TEST_REGEX = "[7|8][(|-]?\\d{3}[-|)]?\\d{3}[-]?\\d{2}[-]?\\d{2}";
 
     public static void main(String[] args) {
         initContacts();
@@ -34,10 +37,15 @@ public class PhoneBook {
                 nameOperation();
             } else if (userInput.matches("LIST")) {
                 contacts.forEach((name, phone) -> System.out.println(name + " " + phone));
+            } else if (userInput.matches(TEST_REGEX)) {
+                System.out.println("Test regex ok!");
+                //???
+
             } else {
                 System.out.println("!> Некорректный ввод.");
             }
         }
+
     }
 
     /**
@@ -62,6 +70,7 @@ public class PhoneBook {
             }
         }
     }
+
     /**
      * Метод phoneOperation().
      * Обработка нового контакта по номеру телефона.
