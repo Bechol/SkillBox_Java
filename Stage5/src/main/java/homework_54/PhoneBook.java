@@ -1,7 +1,6 @@
 package homework_54;
 
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +23,7 @@ public class PhoneBook {
 
     private static final String NAME_REGEX = "^[А-Я][а-я]*$";
     private static final String PHONE_NUMBER_REGEX = "^8[(]\\d{3}[)]\\d{3}[-]\\d{2}[-]\\d{2}";
-    private static final String TEST_REGEX = "[7|8][(|-]?\\d{3}[-|)]?\\d{3}[-]?\\d{2}[-]?\\d{2}";
+    private static final String TEST_REGEX = "[7|8]\\d{10}";
 
     public static void main(String[] args) {
         initContacts();
@@ -39,7 +38,6 @@ public class PhoneBook {
                 contacts.forEach((name, phone) -> System.out.println(name + " " + phone));
             } else if (userInput.matches(TEST_REGEX)) {
                 System.out.println("Test regex ok!");
-                //???
 
             } else {
                 System.out.println("!> Некорректный ввод.");
@@ -60,7 +58,17 @@ public class PhoneBook {
             for (int i = 0; i < 3; i++) {
                 System.out.println("Попытка " + (i + 1));
                 String newTelNum = new Scanner(System.in).nextLine();
-                if (newTelNum.matches(PHONE_NUMBER_REGEX)) {
+                if (newTelNum.matches(TEST_REGEX)) {
+                    if(newTelNum.startsWith("7")) {
+                        newTelNum = newTelNum.replaceAll("^7","8");
+                    }
+                    StringBuilder sb = new StringBuilder(newTelNum);
+                    sb.insert(1,"(");
+                    sb.insert(5,")");
+                    sb.insert(9,"-");
+                    sb.insert(12,"-");
+                    System.out.println(sb.toString());
+
                     contacts.put(userInput, newTelNum);
                     System.out.println("новый контакт " + userInput + " успешно добавлен в телефонную книгу.");
                     break;
