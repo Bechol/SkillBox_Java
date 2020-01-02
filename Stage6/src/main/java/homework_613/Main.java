@@ -1,8 +1,9 @@
 package homework_613;
 
-import homework_613.employees.Manager;
-import homework_613.employees.Operator;
-import homework_613.employees.TopManager;
+import homework_613.employees.Employee;
+import homework_613.employees.impl.Manager;
+import homework_613.employees.impl.Operator;
+import homework_613.employees.impl.TopManager;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 package homework_613;
 
+import homework_613.employees.Employee;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

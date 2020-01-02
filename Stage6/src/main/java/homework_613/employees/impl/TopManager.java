@@ -1,7 +1,7 @@
-package homework_613.employees;
+package homework_613.employees.impl;
 
 import homework_613.Company;
-import homework_613.Employee;
+import homework_613.employees.Employee;
 import homework_613.options.BonusConfig;
 import homework_613.options.PaymentRates;
 

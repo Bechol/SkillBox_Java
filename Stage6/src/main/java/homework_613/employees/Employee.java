@@ -1,4 +1,4 @@
-package homework_613;
+package homework_613.employees;
 
 /**
  * Интерфейс Employee.
