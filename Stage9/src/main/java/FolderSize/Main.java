@@ -45,7 +45,7 @@ public class Main {
      * Метод long getFolderSize(File folder).
      * Считает размер папки по содержимому.
      *
-     * @param folder объект File, содержащий путь к интересующей папке.
+     * @param dir объект File, содержащий путь к интересующей папке.
      * @return размер указанной папки.
      */
     private static long getFolderSize(File dir) throws IOException {
