@@ -19,6 +19,7 @@ public class Operation {
     private LocalDate operationDate; //дата операции
     private String bankingReference; //референс проводки
     private String description; //описание оперции
+    private String shortDescription; //краткое описание
     private double income; //приход
     private double flow; //расход
 
