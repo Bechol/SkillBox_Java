@@ -22,7 +22,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         try{
+            long start = System.nanoTime();
             FileUtils.copyDirectory(SRC_DIR, DEST_DIR);
+            long end = System.nanoTime();
+            System.out.println((end-start)/1000000 + " мс");
         } catch (Exception e) {
             e.printStackTrace();
         }
