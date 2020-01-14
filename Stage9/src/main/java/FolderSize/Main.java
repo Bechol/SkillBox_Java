@@ -5,6 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
@@ -19,7 +22,7 @@ public class Main {
 
     private static final Logger LOG = LogManager.getRootLogger();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         while (true) {
             try {
                 System.out.println("Введите путь к папке:");
@@ -45,16 +48,9 @@ public class Main {
      * @param folder объект File, содержащий путь к интересующей папке.
      * @return размер указанной папки.
      */
-    private static long getFolderSize(File folder) {
-        long length = 0;
-        File[] files = folder.listFiles();
-        for (File file : files)
-            if (file.isFile()) {
-                length += file.length();
-            } else {
-                length += getFolderSize(file);
-            }
-        return length;
+    private static long getFolderSize(File dir) throws IOException {
+        Path path = Path.of(dir.toURI());
+        return Files.walk(path).mapToLong(p -> p.toFile().length() ).sum();
     }
 
     /**
