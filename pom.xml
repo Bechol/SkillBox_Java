@@ -8,6 +8,10 @@
     <artifactId>SkillBox_Java</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
     <modules>
         <module>Stage4</module>
         <module>Stage5</module>
@@ -15,6 +19,7 @@
         <module>Stage7</module>
         <module>Stage8</module>
         <module>Stage9</module>
+        <module>Stage10</module>
     </modules>
 
     <dependencies>
