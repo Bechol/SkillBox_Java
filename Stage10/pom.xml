@@ -9,12 +9,27 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>Stage10</artifactId>
+    <properties>
+        <hibernate-version>5.4.10.Final</hibernate-version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.18</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.4.10.Final</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.4.10.Final</version>
         </dependency>
     </dependencies>
 
