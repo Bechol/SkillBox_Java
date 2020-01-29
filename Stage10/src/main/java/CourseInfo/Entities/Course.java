@@ -3,6 +3,8 @@ package CourseInfo.Entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -17,14 +19,16 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "courses")
+@Table(name = "courses", schema = "CourseInfo")
 public class Course {
     @Id
     private int id;
     private String name;
     private int duration;
     private String description;
-    private int students_count;
+    @Column(name="students_count")
+    private int studentsCount;
     private int price;
-    private float price_per_hour;
+    @Column(name="price_per_hour")
+    private float pricePerHour;
 }

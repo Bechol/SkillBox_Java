@@ -13,7 +13,7 @@ public class HibernateUtil {
     static {
         try {
             Configuration config = new Configuration();
-            sessionFactory = config.configure().buildSessionFactory();
+            sessionFactory = config.configure("CourseInfo.cfg.xml").buildSessionFactory();
         } catch (Throwable e) {
             System.out.println("Error in creating SessionFactory object." + e.getMessage());
             throw new ExceptionInInitializerError(e);
