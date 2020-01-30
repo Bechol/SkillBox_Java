@@ -1,4 +1,4 @@
-package SkillBoxDB;
+package SkillBoxDB.Enums;
 
 /**
  * Enum для поля Type в таблице courses.

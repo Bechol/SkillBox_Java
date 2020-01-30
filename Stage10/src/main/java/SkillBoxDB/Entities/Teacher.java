@@ -19,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "teachers")
 public class Teacher {
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher")
     List<Course> courseList;
     @Id
