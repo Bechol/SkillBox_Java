@@ -1,7 +1,6 @@
 package SkillBoxDB.Entities;
 
 
-import SkillBoxDB.Enums.CourseType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,4 +43,8 @@ public class Course implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "student_id")}
     )
     private List<Student> students;
+
+    enum CourseType {
+        DESIGN, PROGRAMMING, MARKETING, MANAGEMENT, BUSINESS
+    }
 }
