@@ -19,10 +19,11 @@
         <!-- Set the current session context -->
         <property name="current_session_context_class">thread</property>
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">validate</property>
+        <property name="hbm2ddl.auto">update</property>
 
         <mapping class="SkillBoxDB.Entities.Course"/>
         <mapping class="SkillBoxDB.Entities.Student"/>
         <mapping class="SkillBoxDB.Entities.Teacher"/>
+        <mapping class="SkillBoxDB.Entities.PurchaseList"/>
     </session-factory>
 </hibernate-configuration>

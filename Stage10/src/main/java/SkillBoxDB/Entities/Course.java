@@ -22,14 +22,14 @@ public class Course implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
     private int duration;
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "enum")
     private CourseType type;
     private String description;
-    private int students_count;
+    private Integer students_count;
     private int price;
     private float price_per_hour;
 
@@ -37,7 +37,7 @@ public class Course implements Serializable {
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "subscriptions",
             joinColumns = {@JoinColumn(name = "course_id")},
             inverseJoinColumns = {@JoinColumn(name = "student_id")}
