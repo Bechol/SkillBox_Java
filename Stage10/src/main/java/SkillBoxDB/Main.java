@@ -27,20 +27,8 @@ public class Main {
         Student student = session.get(Student.class, 3);
         student.getCourses().forEach(c -> System.out.println(c.getName()));
 
-        String allStudentsHQL = "From " + Student.class.getSimpleName();
-        List<Student> stList = session.createQuery(allStudentsHQL).getResultList();
-        List<PurchaseListPK> pkList = new ArrayList<>();
-        List<LinkedPurchaseListPK> lpkList = new ArrayList<>();
-        stList.forEach(s -> {
-            s.getCourses().forEach(c -> pkList.add(new PurchaseListPK(s.getName(), c.getName())));
-        });
-
-        pkList.forEach(ppk -> {
-            System.out.println("StudentId: " + session.get(PurchaseList.class, ppk).getStudent().getId() +
-                    ". CourseId: " + session.get(PurchaseList.class, ppk).getCourse().getId());
-        });
-
-
+        String allStudentsHQL = "From " + PurchaseList.class.getSimpleName();
+        List<Student> studentList = session.createQuery(allStudentsHQL).getResultList();
 
         session.close();
     }
