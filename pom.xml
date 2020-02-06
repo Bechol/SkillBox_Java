@@ -20,6 +20,7 @@
         <module>Stage8</module>
         <module>Stage9</module>
         <module>Stage10</module>
+        <module>Stage11</module>
     </modules>
 
     <dependencies>
