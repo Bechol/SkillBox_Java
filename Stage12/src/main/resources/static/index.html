@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo list</title>
+    <script type="text/javascript" src="/js/jquery-3.4.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+    <div id="todoForm">
+        <form>
+            <h2>Новое задание</h2>
+            <label>Название:</label>
+            <input type="text" name="name" value=""/>
+            <label>Дата начала:</label>
+            <input type="text" name="dateStart" id="startDatePicker"/>
+            <label>Дата завершения: </label>
+            <input type="text" name="dateEnd" id="finishDatePicker"/>
+            <label>Описание: </label>
+            <textarea name="description"></textarea>
+            <button id="saveTodoBtn">Сохранить</button>
+        </form>
+    </div>
+        <h2>Список дел</h2>
+        <button id="showAddTodoFormBtn">Добавить</button>
+        <br><br>
+        <div id="todo-list">
+
+        </div>
+</body>
+</html>

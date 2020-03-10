@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;;
+}
+
+#todoForm form {
+    background-color: white;
+        border: none;
+        border-radius: 4px;
+        width: 430px;
+        padding: 10px;
+}
+
+#todoForm {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: #88888878;
+}
+
+#divTodo {
+width: auto;
+height: 75%;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 0 10px 10px 10px;
+    margin: 20px;
+}
+
+h2 {    
+    font-size: 1.5rem;
+}
+
+textarea {
+    width:100%;
+    height:120px;
+    border: 1px solid grey;
+    border-radius:4px;
+    resize:none;
+    margin-bottom: 10px;
+}
+
+input {
+  width: 100%; 
+  padding: 4px 6px;
+  border: 1px solid grey;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 8px 6px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition-duration: 0.4s;
+}
+
+button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+label {
+    width: 100%;
+    font-size: 0.8rem;
+}
+
+#showAddTodoFormBtn {
+    width: auto;
+}
+
+
+
+
+
+
