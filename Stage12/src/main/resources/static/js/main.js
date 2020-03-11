@@ -9,10 +9,8 @@ $(function(){
     });
 
     const appendBook = function(data) {
-        var bookCode = '<h4>' + data.name + '</h4>' +
-        "Дата начала: " + data.dateStart + '<br>' +
-        "Дата завершения: " + data.dateEnd + '<br>' +
-        "Описание: " + data.description;
+        var bookCode = '<a href="#" class="todoLink" data-active=true data-id="' +
+            data.id + '">' + data.name + '</a>';
         $('#todo-list')
                 .append('<div id="divTodo">' + bookCode + '</div>');
     };
@@ -34,6 +32,40 @@ $(function(){
         }
     });
 
+    $(document).on('click', '.todoLink', function() {
+        var link = $(this);
+        var todoId = $(this).data('id');
+        var isActive = $(this).data('active');
+        var request = $.ajax({
+                    method: "GET",
+                    url: '/todos/' + todoId,
+                    cache: false,
+                    success: function(response) {
+                        var code = '<br><span> Дата начала: ' + response.dateStart + '<br>' +
+                         'Дата завершения: ' + response.dateEnd + '<br>' +
+                         'Описание: ' + response.description + '</span>';
+                            link.parent().append(code);
+                            link.attr('data-active', false);
+                    },
+                    //TODO: обновить link
+                    beforeSend: function () {
+                        if(isActive !== true) {
+                            request.abort();
+                        }
+                    },
+                    complete: function() {
+                        link = null;
+                    },
+
+                    error: function() {
+                        if (response.status == 404) {
+                            alert('Задание не найдено.')
+                        }
+                    }
+                });
+        return false;
+    });
+
     $('#saveTodoBtn').click(function() {
         var data = $('#todoForm form').serialize();
         $.ajax({
@@ -43,7 +75,7 @@ $(function(){
             success: function(response) {
                 $('#todoForm').css('display', 'none');
                 var book = {};
-                book.id = response.id;
+                book.id = response;
                 var dataArray = $('#todoForm form').serializeArray();
                 for(i in  dataArray) {
                     book[dataArray[i]['name']] = dataArray[i]['value'];
