@@ -11,22 +11,34 @@ import java.util.List;
 @RestController
 public class ToDoController {
 
-    @RequestMapping(value = "/todos/", method = RequestMethod.GET)
+    @RequestMapping("/todos/")
     public List<ToDo> list() {
         return Storage.getAllTodos();
     }
 
-    @RequestMapping(value = "/todos/", method = RequestMethod.POST)
+    @PostMapping("/todos/")
     public int add(ToDo toDo) {
         return Storage.addTodo(toDo);
     }
 
     @GetMapping("/todos/{id}")
-    public ResponseEntity get(@PathVariable int id) {
+    ResponseEntity<ToDo> get(@PathVariable("id") int id) {
         ToDo toDo = Storage.getToDo(id);
-        if (toDo == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return new ResponseEntity(toDo, HttpStatus.OK);
+        return toDo != null ? ResponseEntity.ok(toDo) : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/todos/{id}")
+    synchronized ResponseEntity<Void> delete(@PathVariable("id") int id) {
+        return Storage.deleteToDo(id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/todos/{id}")
+    synchronized ResponseEntity<Void> update(@PathVariable("id") int id, ToDo toDo) {
+        return Storage.patchToDo(id, toDo) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/todos/{id}")
+    synchronized ResponseEntity<Void> replace(@PathVariable("id") int id, ToDo toDo) {
+        return Storage.replaceToDo(id, toDo) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

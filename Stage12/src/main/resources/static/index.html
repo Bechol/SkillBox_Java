@@ -15,12 +15,34 @@
             <label>Название:</label>
             <input type="text" name="name" value=""/>
             <label>Дата начала:</label>
-            <input type="text" name="dateStart" id="startDatePicker"/>
+            <input type="text" class="dateInput" name="dateStart" id="startDatePicker"/>
             <label>Дата завершения: </label>
-            <input type="text" name="dateEnd" id="finishDatePicker"/>
+            <input type="text" class="dateInput" name="dateEnd" id="finishDatePicker"/>
             <label>Описание: </label>
             <textarea name="description"></textarea>
-            <button id="saveTodoBtn">Сохранить</button>
+            <button id="addNewTodoBtn">Добавить</button>
+        </form>
+    </div>
+    <div id="editForm">
+        <form id="testForm" >
+            <h2>Изменение задания</h2>
+            <label>Название:</label>
+            <input type="text" id="todoName" name="name" value=""/>
+            <label>Дата начала:</label>
+            <input type="text" class="dateInput" name="dateStart" id="editStartDate"/>
+            <label>Дата завершения: </label>
+            <input type="text" class="dateInput" name="dateEnd" id="editEndDate"/>
+            <label>Описание: </label>
+            <textarea id="description" name="description"></textarea>
+            <table width="100%">
+                <col width="50%">
+                <col width="50%">
+                <tr>
+                    <td><button id="saveTodoBtn">Сохранить</button></td>
+                    <td><button id="deleteTodoBtn">Удалить</button></td>
+                </tr>
+            </table>
+
         </form>
     </div>
         <h2>Список дел</h2>
@@ -29,5 +51,9 @@
         <div id="todo-list">
 
         </div>
+
+        <table id="todo-table" width="100%">
+
+        </table>
 </body>
 </html>

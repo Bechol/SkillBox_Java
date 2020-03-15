@@ -27,4 +27,28 @@ public class Storage {
         }
         return null;
     }
+
+    public static boolean deleteToDo(int todoId) {
+        if (todos.containsKey(todoId)) {
+            todos.remove(todoId);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean patchToDo(int todoId, ToDo newToDo) {
+        if (todos.containsKey(todoId)) {
+            todos.replace(todoId, newToDo);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean replaceToDo(int todoId, ToDo newToDo) {
+        if (todos.containsKey(todoId)) {
+            todos.replace(todoId, todos.get(todoId), newToDo);
+            return true;
+        }
+        return false;
+    }
 }

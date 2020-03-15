@@ -1,24 +1,28 @@
 $(function(){
 
-    $('#startDatePicker').datepicker({
-        dateFormat:"dd.mm.yy",
+    $('.dateInput').datepicker({
+       dateFormat:"dd.mm.yy",
     });
 
-    $('#finishDatePicker').datepicker({
-            dateFormat:"dd.mm.yy",
-    });
-
-    const appendBook = function(data) {
-        var bookCode = '<a href="#" class="todoLink" data-active=true data-id="' +
+    const appendToDo = function(data) {
+        var todoCode = '<a href="#" class="todoLink" data-active=true data-id="' +
             data.id + '">' + data.name + '</a>';
-        $('#todo-list')
-                .append('<div id="divTodo">' + bookCode + '</div>');
+            $('#todo-table').append(
+                '<tr>' +
+                '<td>' + todoCode + '</td>' +
+                '<td class="taskDate">' + $.datepicker.formatDate('dd.mm.yy', new Date(data.dateStart)) + '</td>' +
+                '<td class="taskDate">' + $.datepicker.formatDate('dd.mm.yy', new Date(data.dateEnd)) + '</td>' +
+                '<td>' + data.description + '</td>' +
+                '</tr>'
+            );
     };
 
+    //Load todos to table
     $.get('/todos/', function(response){
         for(i in response) {
-            appendBook(response[i]);
+            appendToDo(response[i]);
         }
+        console.log("data successfully loaded into table")
     });
 
     $('#showAddTodoFormBtn').click(function() {
@@ -32,57 +36,88 @@ $(function(){
         }
     });
 
+    $('#editForm').click(function(event){
+            if(event.target === this) {
+                $(this).css('display', 'none');
+            }
+    });
+
+    var globToDoId;
+
+    //Open form with task information
     $(document).on('click', '.todoLink', function() {
         var link = $(this);
         var todoId = $(this).data('id');
-        var isActive = $(this).data('active');
-        var request = $.ajax({
-                    method: "GET",
-                    url: '/todos/' + todoId,
-                    cache: false,
-                    success: function(response) {
-                        var code = '<br><span> Дата начала: ' + response.dateStart + '<br>' +
-                         'Дата завершения: ' + response.dateEnd + '<br>' +
-                         'Описание: ' + response.description + '</span>';
-                            link.parent().append(code);
-                            link.attr('data-active', false);
-                    },
-                    //TODO: обновить link
-                    beforeSend: function () {
-                        if(isActive !== true) {
-                            request.abort();
-                        }
-                    },
-                    complete: function() {
-                        link = null;
-                    },
-
-                    error: function() {
-                        if (response.status == 404) {
-                            alert('Задание не найдено.')
-                        }
+        $('#editForm').css('display', 'flex');
+        $.ajax({
+                method: "GET",
+                url: '/todos/' + todoId,
+                success: function(response) {
+                    globToDoId = todoId;
+                    $('#todoName').val(response.name);
+                    $('#editStartDate').val($.datepicker.formatDate('dd.mm.yy', new Date(response.dateStart)));
+                    $('#editEndDate').val($.datepicker.formatDate('dd.mm.yy', new Date(response.dateEnd)));
+                    $('#description').val(response.description);
+                },
+                error: function() {
+                    if (response.status == 404) {
+                    alert('Задание не найдено.')
                     }
-                });
-        return false;
+                }
+        });
     });
 
+    //Saving task
     $('#saveTodoBtn').click(function() {
+        var data = $('#editForm form').serialize();
+        $.ajax({
+                method: 'PATCH',
+                url: '/todos/' + globToDoId,
+                data: data,
+                success: function(response) {
+                    $('#editForm').css('display', 'none');
+                },
+                error: function() {
+                    if (response.status == 404) {
+                        alert('Задание не найдено.')
+                    }
+                }
+        });
+    });
+
+    //Deleting task
+    $('#deleteTodoBtn').click(function() {
+        $.ajax({
+                method: 'DELETE',
+                url: '/todos/' + globToDoId,
+                success: function(response) {
+                    alert("Задание удалено!")
+                },
+                error: function() {
+                    if (response.status == 404) {
+                        alert('Задание не найдено.')
+                    }
+                }
+        });
+    });
+
+    //Adding task
+    $('#addNewTodoBtn').click(function() {
         var data = $('#todoForm form').serialize();
         $.ajax({
-            method: "POST",
-            url: '/todos/',
-            data: data,
-            success: function(response) {
-                $('#todoForm').css('display', 'none');
-                var book = {};
-                book.id = response;
-                var dataArray = $('#todoForm form').serializeArray();
-                for(i in  dataArray) {
-                    book[dataArray[i]['name']] = dataArray[i]['value'];
+                method: "POST",
+                url: '/todos/',
+                data: data,
+                success: function(response) {
+                    $('#todoForm').css('display', 'none');
+                    var todo = {};
+                    todo.id = response;
+                    var dataArray = $('#todoForm form').serializeArray();
+                    for(i in  dataArray) {
+                        todo[dataArray[i]['name']] = dataArray[i]['value'];
+                    }
+                    appendToDo(todo);
                 }
-                appendBook(book);
-            }
         });
-        return false;
     });
 });
