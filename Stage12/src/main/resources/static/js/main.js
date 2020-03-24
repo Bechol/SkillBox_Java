@@ -10,19 +10,18 @@ $(function(){
             $('#todo-table').append(
                 '<tr>' +
                 '<td>' + todoCode + '</td>' +
-                '<td class="taskDate">' + $.datepicker.formatDate('dd.mm.yy', new Date(data.dateStart)) + '</td>' +
-                '<td class="taskDate">' + $.datepicker.formatDate('dd.mm.yy', new Date(data.dateEnd)) + '</td>' +
+                '<td class="taskDate">' + data.dateStart + '</td>' +
+                '<td class="taskDate">' + data.dateEnd + '</td>' +
                 '<td>' + data.description + '</td>' +
                 '</tr>'
             );
     };
 
     //Load todos to table
-    $.get('/todos/', function(response){
+    $.get('/api/v1/todo/alltodos', function(response){
         for(i in response) {
             appendToDo(response[i]);
         }
-        console.log("data successfully loaded into table")
     });
 
     $('#showAddTodoFormBtn').click(function() {
@@ -51,13 +50,13 @@ $(function(){
         $('#editForm').css('display', 'flex');
         $.ajax({
                 method: "GET",
-                url: '/todos/' + todoId,
+                url: '/api/v1/todo/' + todoId,
                 success: function(response) {
                     globToDoId = todoId;
-                    $('#todoName').val(response.name);
-                    $('#editStartDate').val($.datepicker.formatDate('dd.mm.yy', new Date(response.dateStart)));
-                    $('#editEndDate').val($.datepicker.formatDate('dd.mm.yy', new Date(response.dateEnd)));
-                    $('#description').val(response.description);
+                    $('#editToDoName').val(response.name);
+                    $('#editStartDate').val(response.dateStart);
+                    $('#editEndDate').val(response.dateEnd);
+                    $('#editToDoDescription').val(response.description);
                 },
                 error: function() {
                     if (response.status == 404) {
@@ -69,11 +68,18 @@ $(function(){
 
     //Saving task
     $('#saveTodoBtn').click(function() {
-        var data = $('#editForm form').serialize();
+        var formData = {
+                'name': $('#editToDoName').val(),
+                'dateStart': $('#editStartDate').val(),
+                'dateEnd': $('#editEndDate').val(),
+                'description': $('#editToDoDescription').val()
+            };
         $.ajax({
-                method: 'PATCH',
-                url: '/todos/' + globToDoId,
-                data: data,
+                url: '/api/v1/todo/' + globToDoId,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(formData),
                 success: function(response) {
                     $('#editForm').css('display', 'none');
                 },
@@ -88,10 +94,10 @@ $(function(){
     //Deleting task
     $('#deleteTodoBtn').click(function() {
         $.ajax({
-                method: 'DELETE',
-                url: '/todos/' + globToDoId,
+                url: '/api/v1/todo/' + globToDoId,
+                method: "DELETE",
                 success: function(response) {
-                    alert("Задание удалено!")
+                    $('#editForm').css('display', 'none');
                 },
                 error: function() {
                     if (response.status == 404) {
@@ -103,11 +109,18 @@ $(function(){
 
     //Adding task
     $('#addNewTodoBtn').click(function() {
-        var data = $('#todoForm form').serialize();
+        var formData = {
+        			'name': $('#newToDoName').val(),
+        			'dateStart': $('#startDatePicker').val(),
+        			'dateEnd': $('#finishDatePicker').val(),
+        			'description': $('#newToDoDescription').val()
+        		};
         $.ajax({
-                method: "POST",
-                url: '/todos/',
-                data: data,
+                url: '/api/v1/todo/',
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(formData),
                 success: function(response) {
                     $('#todoForm').css('display', 'none');
                     var todo = {};

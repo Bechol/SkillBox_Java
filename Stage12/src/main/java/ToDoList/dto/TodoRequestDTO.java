@@ -1,37 +1,27 @@
-package ToDoList.models;
+package ToDoList.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 /**
- * Класс ToDo.
- * Реализация сущности дела.
+ * Класс TodoRequestDTO.
+ * Реализация тела дела.
  *
  * @author Oleg Bech.
  * @email oleg071984@gmail.com
  */
-@Entity
 @Data
-@Table(name = "TODO")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ToDo {
-    /**
-     * Поле id;
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TODO_ID")
+public class TodoRequestDTO {
+
     private Long id;
+
     /**
      * Наименование дела.
      */
@@ -50,4 +40,5 @@ public class ToDo {
      * Описание.
      */
     private String description;
+
 }
