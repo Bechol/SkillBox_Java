@@ -1,28 +1,36 @@
 $(function(){
 
+    var baseUrl = "http://localhost:8080/api/v1/todo/"
+
     $('.dateInput').datepicker({
        dateFormat:"dd.mm.yy",
     });
 
-    const appendToDo = function(data) {
-        var todoCode = '<a href="#" class="todoLink" data-active=true data-id="' +
-            data.id + '">' + data.name + '</a>';
-            $('#todo-table').append(
-                '<tr>' +
-                '<td>' + todoCode + '</td>' +
-                '<td class="taskDate">' + data.dateStart + '</td>' +
-                '<td class="taskDate">' + data.dateEnd + '</td>' +
-                '<td>' + data.description + '</td>' +
-                '</tr>'
-            );
-    };
+    getAllToDo();
 
-    //Load todos to table
-    $.get('/api/v1/todo/alltodos', function(response){
-        for(i in response) {
-            appendToDo(response[i]);
-        }
-    });
+    function getAllToDo() {
+        $.ajax({
+            url: baseUrl + "alltodos",
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                var tableBody = $("#todo-table");
+                tableBody.empty();
+                $(data).each(function(index, element) {
+                    tableBody.append(
+                        '<tr>' +
+                        '<td>' +
+                        '<a href="#" class="todoLink" data-active=true data-id="' + element.id + '">' + element.name + '</a>' +
+                        '</td>' +
+                        '<td class="taskDate">' + element.dateStart + '</td>' +
+                        '<td class="taskDate">' + element.dateEnd + '</td>' +
+                        '<td>' + element.description + '</td>' +
+                        '</tr>'
+                    );
+                })
+            }
+        });
+    };
 
     $('#showAddTodoFormBtn').click(function() {
         $("#todoForm form").trigger('reset');
@@ -44,93 +52,89 @@ $(function(){
     var globToDoId;
 
     //Open form with task information
-    $(document).on('click', '.todoLink', function() {
+    $(document).on("click", ".todoLink", function() {
         var link = $(this);
         var todoId = $(this).data('id');
-        $('#editForm').css('display', 'flex');
+        $("#editForm").css("display", "flex");
         $.ajax({
+                url: baseUrl + todoId,
                 method: "GET",
-                url: '/api/v1/todo/' + todoId,
                 success: function(response) {
                     globToDoId = todoId;
-                    $('#editToDoName').val(response.name);
-                    $('#editStartDate').val(response.dateStart);
-                    $('#editEndDate').val(response.dateEnd);
-                    $('#editToDoDescription').val(response.description);
+                    $("#editToDoName").val(response.name);
+                    $("#editStartDate").val(response.dateStart);
+                    $("#editEndDate").val(response.dateEnd);
+                    $("#editToDoDescription").val(response.description);
                 },
-                error: function() {
+                error: function(response) {
                     if (response.status == 404) {
-                    alert('Задание не найдено.')
+                        alert("Задание не найдено.");
                     }
                 }
         });
     });
 
     //Saving task
-    $('#saveTodoBtn').click(function() {
+    $("#saveTodoBtn").click(function() {
         var formData = {
-                'name': $('#editToDoName').val(),
-                'dateStart': $('#editStartDate').val(),
-                'dateEnd': $('#editEndDate').val(),
-                'description': $('#editToDoDescription').val()
+                "name": $("#editToDoName").val(),
+                "dateStart": $("#editStartDate").val(),
+                "dateEnd": $("#editEndDate").val(),
+                "description": $("#editToDoDescription").val()
             };
         $.ajax({
-                url: '/api/v1/todo/' + globToDoId,
-                type: "PUT",
+                url: baseUrl + globToDoId,
+                method: 'PUT',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 data: JSON.stringify(formData),
                 success: function(response) {
+                    getAllToDo();
                     $('#editForm').css('display', 'none');
                 },
-                error: function() {
+                error: function(response) {
                     if (response.status == 404) {
-                        alert('Задание не найдено.')
+                        alert('Задание не найдено.');
                     }
                 }
         });
     });
 
     //Deleting task
-    $('#deleteTodoBtn').click(function() {
+    $("#deleteTodoBtn").click(function() {
         $.ajax({
-                url: '/api/v1/todo/' + globToDoId,
-                method: "DELETE",
-                success: function(response) {
-                    $('#editForm').css('display', 'none');
-                },
-                error: function() {
-                    if (response.status == 404) {
-                        alert('Задание не найдено.')
-                    }
-                }
+            url: baseUrl + globToDoId,
+            method: "DELETE",
+            success: function() {
+                getAllToDo();
+                $("#editForm").css("display", "none");
+            },
+            error: function (error) {
+              console.log(error);
+            }
         });
     });
 
     //Adding task
-    $('#addNewTodoBtn').click(function() {
+    $("#addNewTodoBtn").click(function() {
         var formData = {
-        			'name': $('#newToDoName').val(),
-        			'dateStart': $('#startDatePicker').val(),
-        			'dateEnd': $('#finishDatePicker').val(),
-        			'description': $('#newToDoDescription').val()
+        			"name" : $("#newToDoName").val(),
+        			"dateStart" : $("#startDatePicker").val(),
+        			"dateEnd" : $("#finishDatePicker").val(),
+        			"description" : $("#newToDoDescription").val()
         		};
         $.ajax({
-                url: '/api/v1/todo/',
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify(formData),
-                success: function(response) {
-                    $('#todoForm').css('display', 'none');
-                    var todo = {};
-                    todo.id = response;
-                    var dataArray = $('#todoForm form').serializeArray();
-                    for(i in  dataArray) {
-                        todo[dataArray[i]['name']] = dataArray[i]['value'];
-                    }
-                    appendToDo(todo);
-                }
+            url: baseUrl,
+            method: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(formData, null, '\t'),
+            success: function() {
+                getAllToDo();
+            },
+            error: function (error) {
+                console.log(error);
+            }
         });
     });
 });

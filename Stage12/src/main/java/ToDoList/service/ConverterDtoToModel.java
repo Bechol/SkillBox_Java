@@ -2,6 +2,7 @@ package ToDoList.service;
 
 import ToDoList.dto.TodoRequestDTO;
 import ToDoList.models.ToDo;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Класс ConverterDtoToModel.
@@ -10,9 +11,11 @@ import ToDoList.models.ToDo;
  * @author Oleg Bech
  * @email oleg071984@gmail.com
  */
+@Slf4j
 public class ConverterDtoToModel {
 
     public static ToDo convert(TodoRequestDTO todoRequestDTO) {
+        log.info("Convert: {}", todoRequestDTO);
         return ToDo.builder()
                 .id(todoRequestDTO.getId())
                 .name(todoRequestDTO.getName())

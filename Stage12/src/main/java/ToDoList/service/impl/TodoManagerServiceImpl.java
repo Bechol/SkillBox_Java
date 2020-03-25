@@ -71,7 +71,7 @@ public class TodoManagerServiceImpl implements TodoManagerService {
 
     @Override
     public void removeToDo(long id) {
-        ToDo poll = toDoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("ToDo not exist"));
-        toDoRepository.delete(poll);
+        ToDo todo = toDoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("ToDo not exist"));
+        toDoRepository.delete(todo);
     }
 }

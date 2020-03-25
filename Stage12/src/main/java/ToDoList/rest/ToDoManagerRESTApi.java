@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/api/v1/todo/")
 @Api(value = "ToDo Manager", description = "Api для работы с делами")
+@Slf4j
 public class ToDoManagerRESTApi {
 
     private final TodoManagerService todoManagerService;
@@ -40,8 +42,9 @@ public class ToDoManagerRESTApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Дело успешно создано"),
     })
-    public ResponseEntity addToDo(@RequestBody TodoRequestDTO todoRequestDTO) {
+    public ResponseEntity<ToDo> addToDo(@RequestBody TodoRequestDTO todoRequestDTO) {
         ToDo toDo = ConverterDtoToModel.convert(todoRequestDTO);
+        log.info("addToDo: {}", toDo);
         todoManagerService.addTodo(toDo);
         return ResponseEntity.ok().build();
     }
@@ -89,7 +92,6 @@ public class ToDoManagerRESTApi {
     public ResponseEntity<ToDo> updatePoll(@PathVariable Long todoId, @RequestBody TodoRequestDTO todoRequestDTO) {
         ToDo toDo = ConverterDtoToModel.convert(todoRequestDTO);
         toDo.setId(todoId);
-        todoManagerService.updateToDo(toDo);
         return ResponseEntity.ok(todoManagerService.updateToDo(toDo));
     }
 
@@ -101,6 +103,6 @@ public class ToDoManagerRESTApi {
     })
     public ResponseEntity<Void> removePoll(@PathVariable Long todoId) {
         todoManagerService.removeToDo(todoId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
