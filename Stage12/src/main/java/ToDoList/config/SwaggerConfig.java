@@ -27,7 +27,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiEndPointsInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("ToDoList.rest"))
+                .apis(RequestHandlerSelectors.basePackage("ToDoList.controllers"))
                 .paths(PathSelectors.any())
                 .build();
     }

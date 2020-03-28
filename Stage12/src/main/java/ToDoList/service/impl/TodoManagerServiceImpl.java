@@ -2,7 +2,9 @@ package ToDoList.service.impl;
 
 import ToDoList.models.ToDo;
 import ToDoList.repositories.ToDoRepository;
+import ToDoList.service.Messages;
 import ToDoList.service.TodoManagerService;
+import ToDoList.service.exceptions.ToDoNullException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -18,14 +22,16 @@ public class TodoManagerServiceImpl implements TodoManagerService {
 
     private final ToDoRepository toDoRepository;
 
-    public TodoManagerServiceImpl(ToDoRepository toDoRepository) {
+    private final Messages messages;
+
+    public TodoManagerServiceImpl(ToDoRepository toDoRepository, Messages messages) {
         this.toDoRepository = toDoRepository;
+        this.messages = messages;
     }
 
     @Override
     public void addTodo(ToDo toDo) {
-
-            toDoRepository.save(toDo);
+        toDoRepository.save(toDo);
     }
 
     @Override
@@ -59,19 +65,25 @@ public class TodoManagerServiceImpl implements TodoManagerService {
     @Override
     public ToDo getTodoById(long id) {
         Optional<ToDo> result = toDoRepository.findById(id);
-        return result.orElseThrow(() -> new NoSuchElementException("ToDo not exist."));
+        return result.orElseThrow(
+                () -> new ToDoNullException(messages.getMessage("todo.exception.todoNotFindException"))
+        );
     }
 
     @Override
     public ToDo updateToDo(ToDo newToDo) {
-        toDoRepository.findById(newToDo.getId()).orElseThrow(() -> new NoSuchElementException("ToDo not exist."));
+        toDoRepository.findById(newToDo.getId()).orElseThrow(
+                () -> new ToDoNullException(messages.getMessage("todo.exception.todoIsNotExist"))
+        );
         toDoRepository.save(newToDo);
         return null;
     }
 
     @Override
     public void removeToDo(long id) {
-        ToDo todo = toDoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("ToDo not exist"));
+        ToDo todo = toDoRepository.findById(id).orElseThrow(
+                () -> new ToDoNullException(messages.getMessage("todo.exception.todoIsNotExist"))
+        );
         toDoRepository.delete(todo);
     }
 }

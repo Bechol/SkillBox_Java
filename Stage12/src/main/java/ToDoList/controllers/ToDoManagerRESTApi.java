@@ -1,4 +1,4 @@
-package ToDoList.rest;
+package ToDoList.controllers;
 
 import ToDoList.dto.TodoRequestDTO;
 import ToDoList.models.ToDo;
