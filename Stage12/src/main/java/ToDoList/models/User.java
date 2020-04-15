@@ -1,10 +1,12 @@
 package ToDoList.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,16 +19,26 @@ public class User implements UserDetails {
     private String username;
     private String password;
 
+    @Transient
+    private String newPassword;
+    @Transient
+    private String confirmNewPassword;
+
     /**
      * Связь с делами.
      */
-    @OneToMany(mappedBy = "user")
-    private Set<ToDo> todos;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<ToDo> todos = new HashSet<>();
     /**
      * Связь с пользователями.
      */
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    @JoinTable(
+            name = "tbl_users_roles",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
 
@@ -42,7 +54,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     public void setUsername(String username) {
@@ -65,6 +77,23 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getConfirmNewPassword() {
+        return confirmNewPassword;
+    }
+
+    public void setConfirmNewPassword(String confirmNewPassword) {
+        this.confirmNewPassword = confirmNewPassword;
+    }
+
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -97,6 +126,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
 }

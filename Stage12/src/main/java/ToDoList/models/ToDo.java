@@ -23,7 +23,6 @@ public class ToDo {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TODO_ID")
     private Long id;
     /**
      * Наименование дела.
@@ -55,6 +54,15 @@ public class ToDo {
 
     public ToDo() {
 
+    }
+
+    public ToDo(Long id, String name, Date dateStart, Date dateEnd, String description, User user) {
+        this.id = id;
+        this.name = name;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.description = description;
+        this.user = user;
     }
 
     public Long getId() {

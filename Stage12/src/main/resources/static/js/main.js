@@ -1,6 +1,6 @@
 $(function(){
 
-    var baseUrl = "http://localhost:8080/api/v1/todo/"
+    var baseUrl = "http://localhost:8080/api/user/v1/todo/"
 
     $('.dateInput').datepicker({
        dateFormat:"dd.mm.yy",

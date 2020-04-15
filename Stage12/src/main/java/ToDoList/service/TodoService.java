@@ -1,39 +1,36 @@
 package ToDoList.service;
 
 import ToDoList.models.ToDo;
+import ToDoList.models.User;
 import ToDoList.repositories.ToDoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
-public class CaseService {
+public class TodoService {
 
     @Autowired
     ToDoRepository toDoRepository;
-
-    @Autowired
-    UserService userService;
 
     public ToDo findTodoById(Long todoId) throws NoSuchElementException {
         return toDoRepository.findById(todoId)
                 .orElseThrow(() -> new NoSuchElementException("ToDo id:" + todoId + " not found"));
     }
 
-    public boolean createNewTodo(Long userId, ToDo todoFromRequest) {
-        try {
-            todoFromRequest.setUser(userService.findUserById(userId));
-            toDoRepository.save(todoFromRequest);
-            log.info("ToDo [{}] created for user id:{}", todoFromRequest.getName(), userId);
-            return true;
-        } catch (NoSuchElementException e) {
-            log.warn(e.getMessage());
-            e.printStackTrace();
-        }
-        return false;
+    public List<ToDo> findTodosByUser(User authenticatedUser) {
+        return new ArrayList<>(authenticatedUser.getTodos());
+    }
+
+    public void createNewTodo(User user, ToDo todoFromRequest) {
+        todoFromRequest.setUser(user);
+        toDoRepository.save(todoFromRequest);
+        log.info("ToDo [{}] created.", todoFromRequest.getName());
     }
 
     public boolean updateToDo(Long todoId, ToDo todoFromRequest) {

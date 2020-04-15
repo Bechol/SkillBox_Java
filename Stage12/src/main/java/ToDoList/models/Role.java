@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,9 +19,10 @@ public class Role implements GrantedAuthority {
     /**
      * Связь с пользователями.
      */
+
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<User> users;
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    private Set<User> users = new HashSet<>();
 
     public Role() {
 
@@ -54,8 +56,10 @@ public class Role implements GrantedAuthority {
         this.users = users;
     }
 
+    @JsonIgnore
     @Override
     public String getAuthority() {
         return getName();
     }
+
 }
