@@ -35,16 +35,17 @@
 <div align="center">
     <form action="#" th:action="@{/registration}" th:object="${newUser}" method="post">
         <div class="form-group" align="left">
-            <label>Username</label>
-            <input type="text" class="form-control mb-3" th:field="*{username}">
+            <label for="username">Username</label>
+            <input id="username" type="text" class="form-control mb-3" th:field="*{username}" required autofocus>
         </div>
         <div class="form-group" align="left">
-            <label >Password</label>
-            <input type="password" class="form-control mb-3" th:field="*{newPassword}">
+            <label for="newPassword">Password</label>
+            <input id="newPassword" type="password" class="form-control mb-3" th:field="*{newPassword}">
         </div>
         <div class="form-group" align="left">
-            <label >Confirm password</label>
-            <input type="password" class="form-control mb-3" th:field="*{confirmNewPassword}">
+            <label for="confirmNewPassword">Confirm password</label>
+            <input id="confirmNewPassword" type="password" class="form-control mb-3" th:field="*{confirmNewPassword}"
+            required autofocus>
             <div align="right">
                 <a href="/" role="button" class="btn btn-outline-dark" aria-pressed="true">Cancel</a>
                 <button type="submit" class="btn btn-outline-dark">Sign up</button>

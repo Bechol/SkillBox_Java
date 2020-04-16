@@ -1,6 +1,6 @@
 $(function(){
 
-    var baseUrl = "http://localhost:8080/api/user/v1/todo/"
+    var baseUrl = "http://localhost:8080/api/todo/v1/"
 
     $('.dateInput').datepicker({
        dateFormat:"dd.mm.yy",
@@ -10,7 +10,7 @@ $(function(){
 
     function getAllToDo() {
         $.ajax({
-            url: baseUrl + "alltodos",
+            url: baseUrl + "mytodos",
             method: "GET",
             dataType: "json",
             success: function(data) {
@@ -57,7 +57,7 @@ $(function(){
         var todoId = $(this).data('id');
         $("#editForm").css("display", "flex");
         $.ajax({
-                url: baseUrl + todoId,
+                url: baseUrl + "mytodos/" + todoId,
                 method: "GET",
                 success: function(response) {
                     globToDoId = todoId;
@@ -124,7 +124,7 @@ $(function(){
         			"description" : $("#newToDoDescription").val()
         		};
         $.ajax({
-            url: baseUrl,
+            url: baseUrl + "create",
             method: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
