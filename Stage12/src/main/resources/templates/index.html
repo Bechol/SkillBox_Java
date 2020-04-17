@@ -1,10 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>My todos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Spring Boot Thymeleaf Hello World Example</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+
 </head>
 <body>
-<h1>mytodos</h1>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" th:text="${username}"></a>
+    <button type="button" class="btn btn-outline-light ml-3" data-toggle="modal" data-target="#myModal">
+        Add new todo
+    </button>
+    <button type="button" class="btn btn-outline-light ml-3" data-toggle="modal" data-target="#myModal">
+        My profile
+    </button>
+</nav>
+
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr align="center">
+        <th>Name</th>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="todo : ${todos}">
+        <td th:utext="${todo.name}"></td>
+        <td th:utext="${#dates.format(todo.dateStart, 'dd.MM.yyyy')}"></td>
+        <td th:utext="${#dates.format(todo.dateEnd, 'dd.MM.yyyy')}"></td>
+        <td th:utext="${todo.description}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Новое дело</h4>
+            </div>
+            <div class="modal-body" id="md-add">
+                <form th:action="@{todo/create}" th:object="${newTodo}" method="post">
+                    <div class="form-group">
+                        <label for="todoName">Наименование</label>
+                        <input id="todoName" type="text" class="form-control" name="name" th:field="*{name}">
+                    </div>
+                    <div class="form-row">
+                        <div id="start-date-div" class="start-date-div form-group col-md-6">
+                            <label for="dateStart">Дата начала</label>
+                            <input type="date" class="form-control" id="dateStart" name="dateStart" th:field="*{dateStart}">
+                        </div>
+                        <div id="end-date-div" class="end-date-div form-group col-md-6">
+                            <label for="dateEnd">Дата завершения</label>
+                            <input type="date" class="form-control" id="dateEnd" name="dateEnd" th:field="*{dateEnd}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Описание</label>
+                        <textarea class="form-control rounded-0 resize-0" id="description"
+                                  rows="10" name="description" th:field="*{description}"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary" value="save">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

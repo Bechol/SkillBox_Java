@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Интерфейс ToDoRepository.
  * Репозиторий работы с таблицей todo.
+ *
  * @author Oleg Bech
  * @email oleg071984@gmail.com
  */
