@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Класс ToDo.
@@ -17,7 +18,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "TODO")
-@Builder
+//@Builder
 public class ToDo {
     /**
      * Поле id;
@@ -114,5 +115,17 @@ public class ToDo {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "ToDo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", dateStart=" + dateStart +
+                ", dateEnd=" + dateEnd +
+                ", description='" + description + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

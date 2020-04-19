@@ -10,8 +10,6 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -24,7 +22,13 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
 
-
+    <style>
+        table {
+    table-layout: fixed;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+    </style>
 </head>
 <body>
 
@@ -49,10 +53,10 @@
     </thead>
     <tbody>
     <tr th:each="todo : ${todos}">
-        <td th:utext="${todo.name}"></td>
-        <td th:utext="${#dates.format(todo.dateStart, 'dd.MM.yyyy')}"></td>
-        <td th:utext="${#dates.format(todo.dateEnd, 'dd.MM.yyyy')}"></td>
-        <td th:utext="${todo.description}"></td>
+        <td th:text="${todo.name}"></td>
+        <td th:text="${#dates.format(todo.dateStart, 'dd.MM.yyyy')}"></td>
+        <td th:text="${#dates.format(todo.dateEnd, 'dd.MM.yyyy')}"></td>
+        <td th:text="${todo.description}"></td>
     </tr>
     </tbody>
 </table>
@@ -67,22 +71,22 @@
                 <form th:action="@{todo/create}" th:object="${newTodo}" method="post">
                     <div class="form-group">
                         <label for="todoName">Наименование</label>
-                        <input id="todoName" type="text" class="form-control" name="name" th:field="*{name}">
+                        <input id="todoName" type="text" class="form-control" th:field="*{name}">
                     </div>
                     <div class="form-row">
                         <div id="start-date-div" class="start-date-div form-group col-md-6">
                             <label for="dateStart">Дата начала</label>
-                            <input type="date" class="form-control" id="dateStart" name="dateStart" th:field="*{dateStart}">
+                            <input type="date" class="form-control" id="dateStart" th:field="*{dateStart}">
                         </div>
                         <div id="end-date-div" class="end-date-div form-group col-md-6">
                             <label for="dateEnd">Дата завершения</label>
-                            <input type="date" class="form-control" id="dateEnd" name="dateEnd" th:field="*{dateEnd}">
+                            <input type="date" class="form-control" id="dateEnd" th:field="*{dateEnd}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="description">Описание</label>
                         <textarea class="form-control rounded-0 resize-0" id="description"
-                                  rows="10" name="description" th:field="*{description}"></textarea>
+                                  rows="10" th:field="*{description}"></textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
