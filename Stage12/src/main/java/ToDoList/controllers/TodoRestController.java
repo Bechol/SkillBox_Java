@@ -58,7 +58,7 @@ public class TodoRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("update")
+    @PostMapping("update/{todoId}")
     @ApiOperation(value = "Редактирование дела.", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
@@ -73,7 +73,7 @@ public class TodoRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("delete/{todoId}")
     @ApiOperation(value = "Удаление дела.", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),

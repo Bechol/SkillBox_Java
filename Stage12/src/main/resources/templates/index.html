@@ -33,7 +33,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#" th:text="${username}"></a>
+    <a class="navbar-brand" href="#" th:text="${user.username}"></a>
     <button type="button" class="btn btn-outline-light ml-3" data-toggle="modal" data-target="#myModal">
         Add new todo
     </button>
@@ -49,6 +49,7 @@
         <th>Start date</th>
         <th>End date</th>
         <th>Description</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -57,6 +58,12 @@
         <td th:text="${#dates.format(todo.dateStart, 'dd.MM.yyyy')}"></td>
         <td th:text="${#dates.format(todo.dateEnd, 'dd.MM.yyyy')}"></td>
         <td th:text="${todo.description}"></td>
+        <td>
+            <span>
+                <a class="btn btn-primary btn-sm" th:href="@{/todo/{todoId}(todoId=${todo.id})}" role="button">Edit</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/todo/delete/{todoId}(todoId=${todo.id})}" role="button">Delete</a>
+            </span>
+        </td>
     </tr>
     </tbody>
 </table>
@@ -71,22 +78,22 @@
                 <form th:action="@{todo/create}" th:object="${newTodo}" method="post">
                     <div class="form-group">
                         <label for="todoName">Наименование</label>
-                        <input id="todoName" type="text" class="form-control" th:field="*{name}">
+                        <input id="todoName" type="text" class="form-control" th:field="*{name}" required>
                     </div>
                     <div class="form-row">
                         <div id="start-date-div" class="start-date-div form-group col-md-6">
                             <label for="dateStart">Дата начала</label>
-                            <input type="date" class="form-control" id="dateStart" th:field="*{dateStart}">
+                            <input type="date" class="form-control" id="dateStart" th:field="*{dateStart}" required>
                         </div>
                         <div id="end-date-div" class="end-date-div form-group col-md-6">
                             <label for="dateEnd">Дата завершения</label>
-                            <input type="date" class="form-control" id="dateEnd" th:field="*{dateEnd}">
+                            <input type="date" class="form-control" id="dateEnd" th:field="*{dateEnd}" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="description">Описание</label>
                         <textarea class="form-control rounded-0 resize-0" id="description"
-                                  rows="10" th:field="*{description}"></textarea>
+                                  rows="15" th:field="*{description}" required></textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
