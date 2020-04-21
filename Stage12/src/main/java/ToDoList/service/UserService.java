@@ -85,9 +85,9 @@ public class UserService implements UserDetailsService {
 
         String newUserName = editedUser.getUsername().trim();
 
-        editedUser.setId(authenticatedUser.getId());
         if (!Strings.isNullOrEmpty(newUserName) && !newUserName.equals(authenticatedUser.getUsername())) {
-            userRepository.save(editedUser);
+            authenticatedUser.setUsername(newUserName);
+            userRepository.save(authenticatedUser);
             log.info("Username of {} updated.", authenticatedUser.getUsername());
             return true;
         }
@@ -96,22 +96,28 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean updateUserPassword(User authenticatedUser, User editedUser) {
+    //инфа с формы ввода (editmyprofile.html)
+        String oldPassword = editedUser.getPassword().trim();
+        String newPassword = editedUser.getNewPassword().trim();
+        String confirmNewPassword = editedUser.getConfirmNewPassword().trim();
 
-        String oldPassword = editedUser.getPassword();
-        String newPassword = editedUser.getNewPassword();
-        String confirmNewPassword = editedUser.getConfirmNewPassword();
-
-        editedUser.setId(authenticatedUser.getId());
-        if (!Strings.isNullOrEmpty(newPassword) && newPassword.equals(confirmNewPassword) &&
-                passwordEncoder.matches(authenticatedUser.getPassword(), oldPassword)) {
-            editedUser.setPassword(passwordEncoder.encode(newPassword));
-            userRepository.save(editedUser);
-            log.info("User {} password updated.", authenticatedUser.getUsername());
-            return true;
+        if (Strings.isNullOrEmpty(newPassword) || !newPassword.equals(confirmNewPassword)) {
+            log.warn("Password change failed. New password is null or not equals to confirm.");
+            return false;
         }
+        log.info("encoded old pass: {}", passwordEncoder.encode(oldPassword));
+        log.info(authenticatedUser.getPassword());
+        if (Strings.isNullOrEmpty(oldPassword) || !passwordEncoder.encode(oldPassword).equals(authenticatedUser.getPassword())) {
+            log.warn("Password change failed. Old password is null/empty or fake.");
+            return false;
+        }
+
+
         log.warn("User {} password update failed.", authenticatedUser.getUsername());
         return false;
     }
+
+
 
     private boolean findUserByUsername(String username) {
         return userRepository.findUserByUsername(username).isPresent();

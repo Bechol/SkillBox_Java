@@ -5,8 +5,10 @@ import ToDoList.models.User;
 import ToDoList.repositories.ToDoRepository;
 import ToDoList.repositories.UserRepository;
 import ToDoList.service.TodoService;
+import ToDoList.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,9 @@ public class MainController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping
     public String index(Model model) {
@@ -63,6 +68,24 @@ public class MainController {
     public String deleteTodoById(@PathVariable("todoId") Long todoId) {
         toDoRepository.deleteById(todoId);
         return "redirect:/";
+    }
+
+    @GetMapping("/user")
+    public String getAuthenticatedUserPropertiesView(Model model) {
+        User user = userRepository.findById(getAuthenticatedUser().getId())
+                .orElseThrow(() -> new NoSuchElementException("Authenticated user not found."));
+        log.info("Authenticated user: {}", user);
+        model.addAttribute("user", user);
+        return "editmyprofile";
+    }
+
+    @PostMapping("/user/update")
+    public String updateAuthenticatedUserProfile(User user) {
+        User authenticatedUser = userRepository.findById(getAuthenticatedUser().getId())
+                .orElseThrow(() -> new NoSuchElementException("Authenticated user not found."));
+        return userService.updateUserProperties(authenticatedUser, user)
+                || userService.updateUserPassword(authenticatedUser, user)
+                ? "redirect:/" : "redirect:/";
     }
 
     private User getAuthenticatedUser() {
