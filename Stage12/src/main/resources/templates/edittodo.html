@@ -21,7 +21,7 @@
 </head>
 <body>
     <nav class="navbar navbar-dark bg-dark">
-        <span class="navbar-brand mb-0 h1">Edit todo</span>
+        <span class="navbar-brand mb-0 h1">Edit my profile</span>
     </nav>
     <form class="mt-3" th:action="@{/todo/update/{todoId}(todoId=${todo.id})}"
           th:object="${todo}" method="post">
