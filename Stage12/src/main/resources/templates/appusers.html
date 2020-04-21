@@ -33,77 +33,78 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" th:href="@{/user}" th:text="${user.username}"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
+    <span class="navbar-brand mb-0 h1">Users</span>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">New todo<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="#" th:href="@{/}">My todos</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#" th:href="@{/admin/users}">Users</a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#addUserModal">New user<span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        <a class="btn btn-danger" th:href="@{/logout}" role="button">Log out</a>
     </div>
 </nav>
 
 <table class="table table-bordered table-hover">
     <thead>
     <tr align="center">
-        <th>Name</th>
-        <th>Start date</th>
-        <th>End date</th>
-        <th>Description</th>
+        <th>Username</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+<!--        <th>Role</th>-->
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="todo : ${todos}">
-        <td th:text="${todo.name}"></td>
-        <td th:text="${#dates.format(todo.dateStart, 'dd.MM.yyyy')}"></td>
-        <td th:text="${#dates.format(todo.dateEnd, 'dd.MM.yyyy')}"></td>
-        <td th:text="${todo.description}"></td>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+<!--        <td th:text="${user.roles"}></td>-->
         <td>
             <span>
-                <a class="btn btn-primary btn-sm" th:href="@{/todo/{todoId}(todoId=${todo.id})}" role="button">Edit</a>
-                <a class="btn btn-danger btn-sm" th:href="@{/todo/delete/{todoId}(todoId=${todo.id})}" role="button">Delete</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/admin/user/delete/{userId}(userId=${user.id})}" role="button">Delete</a>
             </span>
         </td>
     </tr>
     </tbody>
 </table>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Новое дело</h4>
+                <h4 class="modal-title" id="myModalLabel">Новый пользователь</h4>
             </div>
             <div class="modal-body" id="md-add">
-                <form th:action="@{todo/create}" th:object="${newTodo}" method="post">
+                <form th:action="@{admin/user/create}" th:object="${newUser}" method="post">
                     <div class="form-group">
-                        <label for="todoName">Наименование</label>
-                        <input id="todoName" type="text" class="form-control" th:field="*{name}" required>
+                        <label for="userName">Наименование</label>
+                        <input id="userName" type="text" class="form-control" th:field="*{username}" required>
                     </div>
                     <div class="form-row">
-                        <div id="start-date-div" class="start-date-div form-group col-md-6">
-                            <label for="dateStart">Дата начала</label>
-                            <input type="date" class="form-control" id="dateStart" th:field="*{dateStart}" required>
+                        <div class="form-group col-md-6">
+                            <label for="firstName">First name</label>
+                            <input id="firstName" type="text" class="form-control" th:field="*{firstName}" required>
                         </div>
-                        <div id="end-date-div" class="end-date-div form-group col-md-6">
-                            <label for="dateEnd">Дата завершения</label>
-                            <input type="date" class="form-control" id="dateEnd" th:field="*{dateEnd}" required>
+                        <div class="form-group col-md-6">
+                            <label for="lastName">Last name</label>
+                            <input id="lastName" type="text" class="form-control" th:field="*{lastName}" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="description">Описание</label>
-                        <textarea class="form-control rounded-0 resize-0" id="description"
-                                  rows="15" th:field="*{description}" required></textarea>
+                        <label for="Email">Email</label>
+                        <input id="Email" type="email" class="form-control" th:field="*{email}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Role">Role</label>
+                        <select id="Role" class="form-control" th:field="*{role}">
+                            <option value="ROLE_ADMIN">ADMIN</option>
+                            <option value="ROLE_USER">USER</option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>

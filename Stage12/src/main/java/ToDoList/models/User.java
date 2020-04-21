@@ -27,11 +27,13 @@ public class User implements UserDetails {
     private String newPassword;
     @Transient
     private String confirmNewPassword;
+    @Transient
+    private String role;
 
     /**
      * Связь с делами.
      */
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<ToDo> todos = new HashSet<>();
     /**
      * Связь с пользователями.
@@ -127,6 +129,14 @@ public class User implements UserDetails {
 
     public void setConfirmNewPassword(String confirmNewPassword) {
         this.confirmNewPassword = confirmNewPassword;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @JsonIgnore
