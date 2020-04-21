@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +19,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository,
-                       BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -96,27 +90,19 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean updateUserPassword(User authenticatedUser, User editedUser) {
-    //инфа с формы ввода (editmyprofile.html)
-        String oldPassword = editedUser.getPassword().trim();
         String newPassword = editedUser.getNewPassword().trim();
         String confirmNewPassword = editedUser.getConfirmNewPassword().trim();
 
-        if (Strings.isNullOrEmpty(newPassword) || !newPassword.equals(confirmNewPassword)) {
-            log.warn("Password change failed. New password is null or not equals to confirm.");
-            return false;
+        if (!Strings.isNullOrEmpty(newPassword) && newPassword.equals(confirmNewPassword)) {
+            authenticatedUser.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(authenticatedUser);
+            log.info("User password updated.");
+            return true;
         }
-        log.info("encoded old pass: {}", passwordEncoder.encode(oldPassword));
-        log.info(authenticatedUser.getPassword());
-        if (Strings.isNullOrEmpty(oldPassword) || !passwordEncoder.encode(oldPassword).equals(authenticatedUser.getPassword())) {
-            log.warn("Password change failed. Old password is null/empty or fake.");
-            return false;
-        }
-
 
         log.warn("User {} password update failed.", authenticatedUser.getUsername());
         return false;
     }
-
 
 
     private boolean findUserByUsername(String username) {

@@ -31,17 +31,12 @@
                    placeholder="Username">
         </div>
         <div class="form-row">
-            <div id="password-div" class="form-group col-md-4">
-                <label for="password">Password</label>
-                <input id="password" type="password" class="form-control" value="${user.password}"
-                       th:field="*{password}">
-            </div>
-            <div id="new-password-div" class="form-group col-md-4">
+            <div id="new-password-div" class="form-group col-md-6">
                 <label for="newPassword">New password</label>
                 <input id="newPassword" type="password" class="form-control" value="${user.newPassword}"
                        th:field="*{newPassword}">
             </div>
-            <div id="new-passwordConfirm-div" class="form-group col-md-4">
+            <div id="new-passwordConfirm-div" class="form-group col-md-6">
                 <label for="confirmNewPassword">New password confirm</label>
                 <input id="confirmNewPassword" type="password" class="form-control"
                        value="${user.confirmNewPassword}" th:field="*{confirmNewPassword}">
