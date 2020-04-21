@@ -28,16 +28,25 @@
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
+
     </style>
 </head>
 <body>
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#" th:text="${user.username}"></a>
-    <button type="button" class="btn btn-outline-light ml-3" data-toggle="modal" data-target="#myModal">
-        Add new todo
+    <a class="navbar-brand" th:href="@{/user}" th:text="${user.username}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="btn btn-outline-light ml-3" th:href="@{/user}" role="button">My profie</a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">New todo<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <a class="btn btn-danger" th:href="@{/logout}" role="button">Log out</a>
+    </div>
 </nav>
 
 <table class="table table-bordered table-hover">
