@@ -1,10 +1,10 @@
 package ToDoList.controllers;
 
-import ToDoList.config.security.PasswordConfig;
 import ToDoList.models.User;
 import ToDoList.repositories.RoleRepository;
 import ToDoList.repositories.UserRepository;
 import com.google.common.base.Strings;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import java.util.Collections;
 
 @Controller
 @RequestMapping("/registration")
+@Slf4j
 public class RegistrationController {
 
     @Autowired
@@ -39,10 +40,12 @@ public class RegistrationController {
     public String registrateUser(@ModelAttribute User newUser) {
 
         if (Strings.isNullOrEmpty(newUser.getUsername().trim())) {
+            log.warn("Username is empty. Registration failed.");
             return "registration";
         }
 
         if (!newUser.getNewPassword().equals(newUser.getConfirmNewPassword())) {
+            log.warn("Passwords do not match. Registration failed.");
             return "registration";
         }
 

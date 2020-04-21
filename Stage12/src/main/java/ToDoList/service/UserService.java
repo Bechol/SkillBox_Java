@@ -79,14 +79,19 @@ public class UserService implements UserDetailsService {
 
         String newUserName = editedUser.getUsername().trim();
 
-        if (!Strings.isNullOrEmpty(newUserName) && !newUserName.equals(authenticatedUser.getUsername())) {
-            authenticatedUser.setUsername(newUserName);
-            userRepository.save(authenticatedUser);
-            log.info("Username of {} updated.", authenticatedUser.getUsername());
-            return true;
+        if (!newUserName.equals(authenticatedUser.getUsername()) &&
+                userRepository.findUserByUsername(newUserName).isPresent()) {
+            log.warn("User {} exist. Change username.", authenticatedUser.getUsername());
+            return false;
         }
-        log.warn("Update user {} properties failed.", authenticatedUser.getUsername());
-        return false;
+
+        authenticatedUser.setUsername(newUserName);
+        authenticatedUser.setFirstName(editedUser.getFirstName());
+        authenticatedUser.setLastName(editedUser.getLastName());
+        authenticatedUser.setEmail(editedUser.getEmail());
+        userRepository.save(authenticatedUser);
+        log.info("User {} updated.", authenticatedUser.getUsername());
+        return true;
     }
 
     public boolean updateUserPassword(User authenticatedUser, User editedUser) {
@@ -99,7 +104,6 @@ public class UserService implements UserDetailsService {
             log.info("User password updated.");
             return true;
         }
-
         log.warn("User {} password update failed.", authenticatedUser.getUsername());
         return false;
     }
