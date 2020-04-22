@@ -2,6 +2,7 @@ package ToDoList.controllers;
 
 import ToDoList.models.ToDo;
 import ToDoList.models.User;
+import ToDoList.repositories.RoleRepository;
 import ToDoList.repositories.ToDoRepository;
 import ToDoList.repositories.UserRepository;
 import ToDoList.service.TodoService;
@@ -30,6 +31,9 @@ public class MainController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @Autowired
     UserService userService;
@@ -90,36 +94,7 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping("/admin/users")
-    public String getUsers(Model model) {
-        model.addAttribute("users", userRepository.findAll());
-        model.addAttribute("user", new User());
-        model.addAttribute("newUser", new User());
-        return "appusers";
-    }
-
-    @GetMapping("/admin/user/{userId}")
-    public String getUserEditView(@PathVariable("userId") Long userId, Model model) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(()->new NoSuchElementException("User id:" + userId + "not found."));
-        model.addAttribute("user", user);
-        return "userprofile";
-    }
-
-    @PostMapping("/admin/user/create")
-    public String createUser(@ModelAttribute User newUser) {
-        userService.saveUser(newUser);
-        return "redirect:/";
-    }
-
-    @GetMapping("/admin/user/delete/{userId}")
-    public String deleteUserById(@PathVariable("userId") Long userId) {
-        userRepository.deleteById(userId);
-        return "redirect:/admin/users";
-    }
-
     private User getAuthenticatedUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
-
 }

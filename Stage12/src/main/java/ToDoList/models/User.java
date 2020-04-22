@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -28,7 +27,7 @@ public class User implements UserDetails {
     @Transient
     private String confirmNewPassword;
     @Transient
-    private String role;
+    private String roleByAdmin;
 
     /**
      * Связь с делами.
@@ -38,7 +37,7 @@ public class User implements UserDetails {
     /**
      * Связь с пользователями.
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "tbl_users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -131,12 +130,12 @@ public class User implements UserDetails {
         this.confirmNewPassword = confirmNewPassword;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleByAdmin() {
+        return roleByAdmin;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleByAdmin(String roleByAdmin) {
+        this.roleByAdmin = roleByAdmin;
     }
 
     @JsonIgnore

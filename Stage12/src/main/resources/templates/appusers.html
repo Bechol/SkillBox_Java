@@ -40,7 +40,7 @@
                 <a class="nav-link" href="#" th:href="@{/}">My todos</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#addUserModal">New user<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#addUserModal">New user</a>
             </li>
         </ul>
     </div>
@@ -53,7 +53,6 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
-<!--        <th>Role</th>-->
         <th>Actions</th>
     </tr>
     </thead>
@@ -63,7 +62,6 @@
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.lastName}"></td>
         <td th:text="${user.email}"></td>
-<!--        <td th:text="${user.roles"}></td>-->
         <td>
             <span>
                 <a class="btn btn-danger btn-sm" th:href="@{/admin/user/delete/{userId}(userId=${user.id})}" role="button">Delete</a>
@@ -77,12 +75,12 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Новый пользователь</h4>
+                <h4 class="modal-title" id="myModalLabel">New user</h4>
             </div>
             <div class="modal-body" id="md-add">
-                <form th:action="@{admin/user/create}" th:object="${newUser}" method="post">
+                <form action="#" th:action="@{/admin/user/create}" th:object="${newUser}" method="post">
                     <div class="form-group">
-                        <label for="userName">Наименование</label>
+                        <label for="userName">Username</label>
                         <input id="userName" type="text" class="form-control" th:field="*{username}" required>
                     </div>
                     <div class="form-row">
@@ -101,14 +99,24 @@
                     </div>
                     <div class="form-group">
                         <label for="Role">Role</label>
-                        <select id="Role" class="form-control" th:field="*{role}">
+                        <select id="Role" class="form-control" th:field="*{roleByAdmin}">
                             <option value="ROLE_ADMIN">ADMIN</option>
                             <option value="ROLE_USER">USER</option>
                         </select>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="newPassword">Password</label>
+                            <input id="newPassword" type="password" class="form-control" th:field="*{newPassword}" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="confirmNewPassword">Confirm password</label>
+                            <input id="confirmNewPassword" type="password" class="form-control" th:field="*{confirmNewPassword}" required>
+                        </div>
+                    </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary" value="save">Сохранить</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
                     </div>
                 </form>
             </div>
