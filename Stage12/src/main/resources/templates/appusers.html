@@ -53,6 +53,7 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
+        <th>Roles</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -62,6 +63,7 @@
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.lastName}"></td>
         <td th:text="${user.email}"></td>
+        <td th:text="${#strings.setJoin(user.roles, ',')}"></td>
         <td>
             <span>
                 <a class="btn btn-danger btn-sm" th:href="@{/admin/user/delete/{userId}(userId=${user.id})}" role="button">Delete</a>
