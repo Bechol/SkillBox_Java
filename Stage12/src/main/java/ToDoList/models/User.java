@@ -32,12 +32,12 @@ public class User implements UserDetails {
     /**
      * Связь с делами.
      */
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<ToDo> todos = new HashSet<>();
     /**
      * Связь с пользователями.
      */
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tbl_users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -167,8 +167,10 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

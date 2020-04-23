@@ -63,7 +63,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="todo : ${todos}">
+    <tr th:each="todo : ${user.todos}">
         <td th:text="${todo.name}"></td>
         <td th:text="${#dates.format(todo.dateStart, 'dd.MM.yyyy')}"></td>
         <td th:text="${#dates.format(todo.dateEnd, 'dd.MM.yyyy')}"></td>
