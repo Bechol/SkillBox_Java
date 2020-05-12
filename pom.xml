@@ -23,6 +23,7 @@
         <module>Stage10</module>
         <module>Stage11</module>
         <module>Stage12</module>
+        <module>Stage13</module>
     </modules>
 
     <dependencies>
