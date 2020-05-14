@@ -1,17 +1,13 @@
-package Task2;
+package Homework_13_3.Task2;
 
-import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.RedisConnectionException;
 import org.redisson.config.Config;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Класс RedisStorage.
