@@ -1,43 +1,44 @@
 package Homework_14_7;
 
-import java.io.PrintWriter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+/**
+ * Домашнее задание 14.7
+ *
+ * @author Oleg Bech
+ * @email oleg071984@gmail.com
+ * @see package-inf.java
+ */
 public class Loader {
+
+    private static final int THREAD_AMOUNT = 15;
+    private static final int REGION_AMOUNT = 100;
+
     public static void main(String[] args) throws Exception {
-        long start = System.currentTimeMillis();
-
-        PrintWriter writer = new PrintWriter("res/numbers.txt");
-
-        char letters[] = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
-        for (int regionCode = 1; regionCode < 100; regionCode++) {
-            StringBuilder builder = new StringBuilder();
-            for (int number = 1; number < 1000; number++) {
-                for (char firstLetter : letters) {
-                    for (char secondLetter : letters) {
-                        for (char thirdLetter : letters) {
-                            builder.append(firstLetter);
-                            builder.append(padNumber(number, 3));
-                            builder.append(secondLetter);
-                            builder.append(thirdLetter);
-                            builder.append(padNumber(regionCode, 2));
-                            builder.append("\n");
-                        }
-                    }
-                }
+        if (THREAD_AMOUNT > 0 && REGION_AMOUNT > 0) {
+            long start = System.currentTimeMillis();
+            int finishReqionCode = 0;
+            int startRegionCode = 1;
+            int z = REGION_AMOUNT - REGION_AMOUNT % THREAD_AMOUNT;
+            char[] letters = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
+            ExecutorService pool = Executors.newFixedThreadPool(THREAD_AMOUNT);
+            for (int i = 0; i < THREAD_AMOUNT; i++) {
+                finishReqionCode = z - ((z - finishReqionCode) - z / THREAD_AMOUNT);
+                pool.submit(new FileWriterThread(startRegionCode, finishReqionCode, letters, i, start));
+                System.out.println(new StringBuilder("Thread#").append(i).append(" started. Write regions from ")
+                        .append(startRegionCode).append(" to ").append(finishReqionCode).toString());
+                startRegionCode = finishReqionCode;
             }
-            writer.write(builder.toString());
+            if (z != REGION_AMOUNT) {
+                pool.submit(new FileWriterThread(z, REGION_AMOUNT, letters, THREAD_AMOUNT, start));
+                System.out.println(new StringBuilder("Thread#").append(THREAD_AMOUNT).append(" started. Write regions from ")
+                        .append(z).append(" to ").append(REGION_AMOUNT).toString());
+            }
+            pool.shutdown();
+        } else {
+            System.out.println("Incorrect values of work parameters. Work stopped!");
         }
-        writer.flush();
-        writer.close();
-        System.out.println((System.currentTimeMillis() - start) + " ms");
     }
 
-    private static String padNumber(int number, int numberLength) {
-        String numberStr = Integer.toString(number);
-        int padSize = numberLength - numberStr.length();
-        for (int i = 0; i < padSize; i++) {
-            numberStr = '0' + numberStr;
-        }
-        return numberStr;
-    }
 }
