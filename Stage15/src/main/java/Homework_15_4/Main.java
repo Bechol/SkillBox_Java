@@ -1,55 +1,32 @@
 package Homework_15_4;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+/**
+ * Домашняя работа 15.4
+ * @autor Oleg Bech.
+ * @email oleg071984@gmail.com
+ */
+public class Main {
+    private static final String HADOOP_CONNECTION_URI = "hdfs://0.0.0.0:19000";
 
-import java.io.BufferedWriter;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URI;
+    public static void main(String[] args) throws Exception {
 
-public class Main
-{
-    private static String symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        FileAccess hadoop = new FileAccess(HADOOP_CONNECTION_URI);
 
-    public static void main(String[] args) throws Exception
-    {
-        Configuration configuration = new Configuration();
-        configuration.set("dfs.client.use.datanode.hostname", "true");
-        System.setProperty("HADOOP_USER_NAME", "root");
+        hadoop.create("test5/ok1.txt");
 
-        FileSystem hdfs = FileSystem.get(
-            new URI("hdfs://HOST_NAME:8020"), configuration
-        );
-        Path file = new Path("hdfs://HOST_NAME:8020/test/file.txt");
+        hadoop.append("test5/append_test1.txt", "\ntesting content for append");
 
-        if (hdfs.exists(file)) {
-            hdfs.delete(file, true);
+
+        System.out.println(hadoop.read("test5/append_test1.txt"));
+
+        hadoop.delete("test5/append_test.txt");
+
+        if (hadoop.isDirectory("test5/append_test.txt")) {
+            System.out.println("yes! it's directory!");
+        } else {
+            System.out.println("Something goes wrong.");
         }
 
-        OutputStream os = hdfs.create(file);
-        BufferedWriter br = new BufferedWriter(
-            new OutputStreamWriter(os, "UTF-8")
-        );
-
-        for(int i = 0; i < 10_000_000; i++) {
-            br.write(getRandomWord() + " ");
-        }
-
-        br.flush();
-        br.close();
-        hdfs.close();
-    }
-
-    private static String getRandomWord()
-    {
-        StringBuilder builder = new StringBuilder();
-        int length = 2 + (int) Math.round(10 * Math.random());
-        int symbolsCount = symbols.length();
-        for(int i = 0; i < length; i++) {
-            builder.append(symbols.charAt((int) (symbolsCount * Math.random())));
-        }
-        return builder.toString();
+        System.out.println(hadoop.list("/"));
     }
 }
