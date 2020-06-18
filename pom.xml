@@ -27,6 +27,7 @@
         <module>Stage15</module>
         <module>Stage16</module>
         <module>Stage18</module>
+        <module>Stage19</module>
     </modules>
 
     <dependencies>
